@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vento - Restaurant Menu & Guest Wi-Fi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vento: {
+                            gold: '#D4AF37',
+                            dark: '#121212',
+                            card: '#1A1A1A',
+                            accent: '#C5A059',
+                            red: '#E53E3E'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF099 0%, #D4AF37 50%, #997A15 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border {
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+    </style>
+</head>
+<body class="pb-12 min-h-screen flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b gold-border px-4 py-3 shadow-2xl">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-vento-gold to-yellow-200 flex items-center justify-center text-vento-dark font-serif font-bold text-xl shadow-lg">
+                    V
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold font-serif gold-gradient-text tracking-wide leading-none">VENTO</h1>
+                    <p class="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">Café & Restaurant</p>
+                </div>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex items-center space-x-2">
+                <button onclick="scrollToSection('wifi-section')" class="px-3 py-1.5 rounded-full bg-vento-gold/10 border border-vento-gold/40 text-vento-gold text-xs font-semibold hover:bg-vento-gold hover:text-vento-dark transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-wifi"></i>
+                    <span class="hidden sm:inline">Guest</span> Wi-Fi
+                </button>
+                <button onclick="openAdminModal()" class="px-3 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-gray-300 text-xs font-semibold hover:bg-gray-700 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Admin</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 pt-6 flex-grow w-full">
+
+        <!-- Hero Welcome Banner -->
+        <div class="relative rounded-2xl overflow-hidden mb-8 border border-vento-gold/20 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80" alt="Vento Restaurant Interior" class="w-full h-44 sm:h-64 object-cover filter brightness-50">
+            <div class="absolute inset-0 bg-gradient-to-t from-vento-dark via-vento-dark/60 to-transparent flex flex-col justify-end p-5 sm:p-8">
+                <span class="text-vento-gold text-xs font-semibold tracking-widest uppercase mb-1"><i class="fa-solid fa-utensils mr-1"></i> Welcome to Vento</span>
+                <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white mb-2">Exquisite Dining & Refreshments</h2>
+                <p class="text-xs sm:text-sm text-gray-300 max-w-xl">Browse our digital menu below. Connect to our complimentary high-speed Wi-Fi while you enjoy your meal!</p>
+            </div>
+        </div>
+
+        <!-- Wi-Fi Card Section -->
+        <div id="wifi-section" class="glass-panel rounded-2xl p-5 mb-8 shadow-xl">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="w-12 h-12 rounded-xl bg-vento-gold/10 border border-vento-gold/30 flex items-center justify-center text-vento-gold text-2xl flex-shrink-0">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-serif text-lg font-bold text-white">Customer Wi-Fi Access</h3>
+                            <span class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-bold uppercase">Free High-Speed</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-0.5">Scan the QR code or click below to copy password</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto bg-black/40 p-3 rounded-xl border border-gray-800">
+                    <!-- QR Code Display -->
+                    <div id="qrcode" class="bg-white p-2 rounded-lg border border-gray-300 flex-shrink-0"></div>
+                    
+                    <div class="space-y-1.5 text-center sm:text-left w-full sm:w-auto">
+                        <div class="text-xs text-gray-400">Network Name (SSID):</div>
+                        <div id="wifi-ssid-display" class="font-mono text-xs font-bold text-white bg-gray-800 px-2.5 py-1 rounded border border-gray-700">Vento_Guest_WiFi</div>
+                        
+                        <div class="text-xs text-gray-400 pt-1">Password:</div>
+                        <div class="flex items-center justify-center sm:justify-start gap-2">
+                            <span id="wifi-pass-display" class="font-mono text-xs font-bold text-vento-gold bg-gray-800 px-2.5 py-1 rounded border border-gray-700">TastyBites2026</span>
+                            <button onclick="copyWifiPassword()" class="px-2.5 py-1 bg-vento-gold text-vento-dark text-xs font-bold rounded hover:bg-yellow-400 transition flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar & Filters -->
+        <div class="space-y-4 mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h3 class="text-2xl font-serif font-bold text-white self-start sm:self-auto">Our Menu</h3>
+                
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" id="search-input" onkeyup="filterMenu()" placeholder="Search dish or ingredient..." class="w-full bg-vento-card border border-gray-800 rounded-full py-2 pl-9 pr-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-vento-gold transition">
+                </div>
+            </div>
+
+            <!-- Category Pills Navigation -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="category-
